@@ -293,6 +293,8 @@ static CK_RV deserialize_ck_attribute(struct pkcs11_attribute_head *in,
 
 		memcpy(&pkcs11_data32, data, sizeof(uint32_t));
 		ck_ulong = pkcs11_data32;
+		if (ck_ulong == (uint32_t)~0UL)
+			ck_ulong = (CK_ULONG)~0UL;
 		memcpy(out->pValue, &ck_ulong, sizeof(CK_ULONG));
 		out->ulValueLen = sizeof(CK_ULONG);
 		return CKR_OK;
