@@ -500,6 +500,9 @@ static CK_RV serialize_mecha_rsa_oaep_param(struct serializer *obj,
 	CK_RV rv = CKR_GENERAL_ERROR;
 	size_t params_size = 4 * sizeof(uint32_t) + params->ulSourceDataLen;
 
+	if (mecha->ulParameterLen != sizeof(*params))
+		return CKR_ARGUMENTS_BAD;
+
 	rv = serialize_32b(obj, obj->type);
 	if (rv)
 		return rv;
