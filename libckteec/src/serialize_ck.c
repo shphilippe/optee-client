@@ -471,6 +471,9 @@ static CK_RV serialize_mecha_rsa_pss_param(struct serializer *obj,
 	CK_RV rv = CKR_GENERAL_ERROR;
 	uint32_t params_size = 3 * sizeof(uint32_t);
 
+	if (mecha->ulParameterLen != sizeof(*params))
+		return CKR_ARGUMENTS_BAD;
+
 	rv = serialize_32b(obj, obj->type);
 	if (rv)
 		return rv;
