@@ -141,6 +141,7 @@ CK_RV ckteec_invoke_ta(unsigned long cmd, TEEC_SharedMemory *ctrl,
 	if (ctrl) {
 		op.paramTypes |= TEEC_PARAM_TYPES(TEEC_MEMREF_WHOLE, 0, 0, 0);
 		op.params[0].memref.parent = ctrl;
+        op.params[0].memref.size = ctrl->size;
 	} else {
 		/* TA mandates param#0 as in/out memref for output status */
 		op.paramTypes |= TEEC_PARAM_TYPES(TEEC_MEMREF_TEMP_INOUT,
@@ -152,16 +153,19 @@ CK_RV ckteec_invoke_ta(unsigned long cmd, TEEC_SharedMemory *ctrl,
 	if (io1) {
 		op.paramTypes |= TEEC_PARAM_TYPES(0, TEEC_MEMREF_WHOLE, 0, 0);
 		op.params[1].memref.parent = io1;
+        op.params[1].memref.size = io1->size;
 	}
 
 	if (io2) {
 		op.paramTypes |= TEEC_PARAM_TYPES(0, 0, TEEC_MEMREF_WHOLE, 0);
 		op.params[2].memref.parent = io2;
+        op.params[2].memref.size = io2->size;
 	}
 
 	if (io3) {
 		op.paramTypes |= TEEC_PARAM_TYPES(0, 0, 0, TEEC_MEMREF_WHOLE);
 		op.params[3].memref.parent = io3;
+        op.params[3].memref.size = io3->size;
 	}
 
 	res = TEEC_InvokeCommand(&ta_ctx.session, command, &op, &origin);
